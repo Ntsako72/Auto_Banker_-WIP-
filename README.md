@@ -1,0 +1,52 @@
+def get_account_type(): 
+    while True: 
+        account_type = input("Enter account type ('s' for savings, 'c' for checking): ").lower() 
+        if account_type in ('s', 'c'): 
+            return account_type 
+        else: 
+            print("Invalid input. Please enter 's' for savings or 'c' for checking.") 
+def main(): 
+    # Read customer details 
+    account_number = input("Enter account number: ") 
+    account_type = get_account_type() 
+    try: 
+        min_balance = float(input("Enter minimum balance: ")) 
+        current_balance = float(input("Enter current balance: ")) 
+    except ValueError: 
+        print("Invalid input for balances. Please enter numerical values.") 
+        return 
+    # Initialize message 
+    message = "" 
+    # Check if balance is below minimum 
+    if current_balance < min_balance: 
+        # Apply service charge 
+        if account_type == 's': 
+            current_balance -= 10.00 
+            message = "Service charge of $10 applied for savings account." 
+        else: 
+            current_balance -= 25.00 
+            message = "Service charge of $25 applied for checking account." 
+    else: 
+        # Apply interest 
+        if account_type == 's': 
+            interest = current_balance * 0.04 
+            current_balance += interest 
+            message = "4% interest added to savings account." 
+        else: 
+            # For checking, determine interest rate 
+            if current_balance <= (min_balance + 5000): 
+                interest_rate = 0.03 
+            else: 
+                interest_rate = 0.05 
+            interest = current_balance * interest_rate 
+            current_balance += interest 
+            message = f"{int(interest_rate*100)}% interest added to checking account." 
+    # Output results 
+    account_type_str = "Savings" if account_type == 's' else "Checking" 
+    print("\nAccount Summary:") 
+    print(f"Account Number: {account_number}") 
+    print(f"Account Type: {account_type_str}") 
+    print(f"Final Balance: ${current_balance:.2f}") 
+    print(message) 
+if __name__ == "__main__":
+main()
